@@ -1,4 +1,4 @@
-// App.tsx | version 1.0 | Sign-in, Gmail connection, first-time portal pick, then Inbox / Settings.
+// App.tsx | version 1.1 | Sign-in, Gmail connection, first-time portal pick, then Inbox / Settings.
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { signInWithGoogle, supabase } from "./supabase";
@@ -22,7 +22,7 @@ function readUrlError(): string | null {
   const desc = q.get("error_description") ?? h.get("error_description") ?? "";
   window.history.replaceState({}, "", window.location.pathname);
   if (code === "access_denied") {
-    return "Sign-in was not completed. This app is in private testing, so your Google account must be added as a tester first. Ask for access.";
+    return "Sign-in was not completed. If Google shows a warning that it has not verified this app, click Advanced and then continue to TPF Job Tracker.";
   }
   return desc || "Sign-in did not complete. Please try again.";
 }
@@ -152,7 +152,7 @@ export default function App() {
             Continue with Google
           </button>
           <p className="fineprint">
-            We only read job alert mails. We never send, delete or change anything in your mailbox.
+            We only read job alert mails. We never send, delete or change anything in your mailbox. <a href={import.meta.env.BASE_URL + "privacy.html"}>Privacy policy</a>
           </p>
         </div>
       </main>
