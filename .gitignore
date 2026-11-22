@@ -1,0 +1,8 @@
+node_modules
+dist
+/fixtures
+.env
+.env.*
+*.local
+_workflow
+.DS_Store
