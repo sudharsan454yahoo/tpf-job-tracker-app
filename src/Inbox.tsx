@@ -1,4 +1,4 @@
-// Inbox.tsx | version 1.0 | The main screen: jobs from alert mails, with status, filters and detail.
+// Inbox.tsx | version 1.1 | The main screen: jobs from alert mails, with status, filters and detail.
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { signInWithGoogle, supabase } from "./supabase";
 import type { Connection, FailedMail, Job, JobEvent, Portal, RoundState, Status, SyncRun } from "./types";
@@ -152,7 +152,7 @@ export default function Inbox(props: {
       const prev: Snapshot = { status: job.status, round_no: job.round_no, round_state: job.round_state };
       const { data, error } = await supabase.from("jobs").update(patch).eq("id", job.id).select(JOB_COLS).single();
       if (error || !data) {
-        showToast({ text: "Could not save that change. Please try again." });
+        const stale = error?.code === "PGRST116"; if (stale) await loadJobs(); showToast({ text: stale ? "This list was out of date and has been refreshed. Please try again." : "Could not save that change. Please try again." });
         return;
       }
       const saved = data as Job;
